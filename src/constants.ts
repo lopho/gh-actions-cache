@@ -2,7 +2,10 @@ export enum Inputs {
     Key = "key",
     Path = "path",
     RestoreKeys = "restore-keys",
-    UploadChunkSize = "upload-chunk-size"
+    UploadChunkSize = "upload-chunk-size",
+    ToHash = "to-hash",
+    SkipSave = "skip-save",
+    CheckOnly = "check-only"
 }
 
 export enum Outputs {

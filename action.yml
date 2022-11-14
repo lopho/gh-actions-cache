@@ -14,6 +14,15 @@ inputs:
   upload-chunk-size:
     description: 'The chunk size used to split up large files during upload, in bytes'
     required: false
+  to-hash:
+    description: 'List of globs to uniquely identify the key'
+    required: false
+  skip-save:
+    description: 'Do not save the cache'
+    required: false
+  check-only:
+    description: 'only check for cache presence without retrieval'
+    requierd: false
 outputs:
   cache-hit:
     description: 'A boolean value to indicate an exact match was found for the primary key'
