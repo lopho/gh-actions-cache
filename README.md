@@ -34,10 +34,9 @@ If you are using this inside a container, a POSIX-compliant `tar` needs to be in
 
 * `path` - A list of files, directories, and wildcard patterns to cache and restore. See [`@actions/glob`](https://github.com/actions/toolkit/tree/main/packages/glob) for supported patterns.
 * `key` - An explicit key for restoring and saving the cache
-* `restore-keys` - An ordered list of prefix-matched keys to use for restoring stale cache if no cache hit occurred for key.
-
-#### Environment Variables
-* `SEGMENT_DOWNLOAD_TIMEOUT_MINS` - Segment download timeout (in minutes, default `60`) to abort download of the segment if not completed in the defined number of minutes. [Read more](#cache-segment-restore-timeout)
+* `restore-keys` - An ordered list of keys to use for restoring stale cache if no cache hit occurred for key. Note
+`cache-hit` returns false in this case.
+* `always-save` - Flag indicating that it the cache should always be written
 
 ### Outputs
 

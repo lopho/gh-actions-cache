@@ -4947,6 +4947,7 @@ var Inputs;
     Inputs["Path"] = "path";
     Inputs["RestoreKeys"] = "restore-keys";
     Inputs["UploadChunkSize"] = "upload-chunk-size";
+    Inputs["AlwaysSave"] = "always-save";
 })(Inputs = exports.Inputs || (exports.Inputs = {}));
 var Outputs;
 (function (Outputs) {
@@ -47298,7 +47299,7 @@ function run() {
             }
             const state = utils.getCacheState();
             // Inputs are re-evaluted before the post action, so we want the original key used for restore
-            const primaryKey = core.getState(constants_1.State.CachePrimaryKey);
+            let primaryKey = core.getState(constants_1.State.CachePrimaryKey);
             if (!primaryKey) {
                 utils.logWarning(`Error retrieving key from state.`);
                 return;

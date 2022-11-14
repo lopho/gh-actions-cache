@@ -4947,6 +4947,7 @@ var Inputs;
     Inputs["Path"] = "path";
     Inputs["RestoreKeys"] = "restore-keys";
     Inputs["UploadChunkSize"] = "upload-chunk-size";
+    Inputs["AlwaysSave"] = "always-save";
 })(Inputs = exports.Inputs || (exports.Inputs = {}));
 var Outputs;
 (function (Outputs) {
@@ -48966,6 +48967,7 @@ const core = __importStar(__webpack_require__(470));
 const constants_1 = __webpack_require__(196);
 const utils = __importStar(__webpack_require__(443));
 function run() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             if (!utils.isCacheFeatureAvailable()) {
@@ -48977,9 +48979,18 @@ function run() {
                 utils.logWarning(`Event Validation Error: The event type ${process.env[constants_1.Events.Key]} is not supported because it's not tied to a branch or tag ref.`);
                 return;
             }
-            const primaryKey = core.getInput(constants_1.Inputs.Key, { required: true });
-            core.saveState(constants_1.State.CachePrimaryKey, primaryKey);
+            let primaryKey = core.getInput(constants_1.Inputs.Key, { required: true });
             const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
+            // https://github.com/actions/toolkit/issues/844
+            let alwaysSave = false;
+            if (core.getInput(constants_1.Inputs.AlwaysSave)) {
+                alwaysSave = core.getBooleanInput(constants_1.Inputs.AlwaysSave);
+            }
+            if (alwaysSave) {
+                restoreKeys.push(`${primaryKey}-`);
+                primaryKey = `${primaryKey}-${(_a = process.env['GITHUB_RUN_ID']) !== null && _a !== void 0 ? _a : Date.now()}`;
+            }
+            core.saveState(constants_1.State.CachePrimaryKey, primaryKey);
             const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, {
                 required: true
             });
