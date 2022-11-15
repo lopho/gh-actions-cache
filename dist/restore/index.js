@@ -49641,6 +49641,7 @@ function run() {
                     ].join(", ")}`);
                     return;
                 }
+                core.info(`Cache restored from key: ${cacheKey}`);
             }
             const fastRestoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
             let fastLookupKey = `${primaryKey}-flk`;
