@@ -27,16 +27,11 @@ async function run(): Promise<void> {
 
         const skipSave = core.getInput(Inputs.SkipSave) && core.getBooleanInput(Inputs.SkipSave)
         if (!skipSave) {
-            let primaryKey = core.getState(State.CachePrimaryKey)
-            if (!primaryKey) {
-                utils.logWarning(`Error retrieving key from state.`)
-                return
-            }
-
+            let primaryKey = core.getInput(Inputs.Key, { required: true })
+            let fastKey = `${primaryKey}-flk`
             const checkOnly = core.getInput(Inputs.CheckOnly) && core.getBooleanInput(Inputs.CheckOnly)
             const cachedKey = core.getState(State.CacheMatchedKey)
             const toHash = core.getInput(Inputs.ToHash)
-            let fastKey = `${primaryKey}-flk`
             if (toHash) {
                 const hash = await hashFiles(toHash)
                 if (hash) {

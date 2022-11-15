@@ -5057,7 +5057,6 @@ var Outputs;
 })(Outputs = exports.Outputs || (exports.Outputs = {}));
 var State;
 (function (State) {
-    State["CachePrimaryKey"] = "CACHE_KEY";
     State["CacheMatchedKey"] = "CACHE_RESULT";
 })(State = exports.State || (exports.State = {}));
 var Events;
@@ -47848,15 +47847,11 @@ function run() {
             }
             const skipSave = core.getInput(constants_1.Inputs.SkipSave) && core.getBooleanInput(constants_1.Inputs.SkipSave);
             if (!skipSave) {
-                let primaryKey = core.getState(constants_1.State.CachePrimaryKey);
-                if (!primaryKey) {
-                    utils.logWarning(`Error retrieving key from state.`);
-                    return;
-                }
+                let primaryKey = core.getInput(constants_1.Inputs.Key, { required: true });
+                let fastKey = `${primaryKey}-flk`;
                 const checkOnly = core.getInput(constants_1.Inputs.CheckOnly) && core.getBooleanInput(constants_1.Inputs.CheckOnly);
                 const cachedKey = core.getState(constants_1.State.CacheMatchedKey);
                 const toHash = core.getInput(constants_1.Inputs.ToHash);
-                let fastKey = `${primaryKey}-flk`;
                 if (toHash) {
                     const hash = yield (0, glob_1.hashFiles)(toHash);
                     if (hash) {

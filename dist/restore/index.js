@@ -5057,7 +5057,6 @@ var Outputs;
 })(Outputs = exports.Outputs || (exports.Outputs = {}));
 var State;
 (function (State) {
-    State["CachePrimaryKey"] = "CACHE_KEY";
     State["CacheMatchedKey"] = "CACHE_RESULT";
 })(State = exports.State || (exports.State = {}));
 var Events;
@@ -49630,7 +49629,6 @@ function run() {
             const checkOnly = core.getInput(constants_1.Inputs.CheckOnly) && core.getBooleanInput(constants_1.Inputs.CheckOnly);
             const skipRestore = core.getInput(constants_1.Inputs.SkipRestore) && core.getBooleanInput(constants_1.Inputs.SkipRestore);
             const primaryKey = core.getInput(constants_1.Inputs.Key, { required: true });
-            core.saveState(constants_1.State.CachePrimaryKey, primaryKey);
             if (!checkOnly && !skipRestore) {
                 const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
                 restoreKeys.push(`${primaryKey}-`);

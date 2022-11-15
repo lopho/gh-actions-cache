@@ -14,7 +14,6 @@ export enum Outputs {
 }
 
 export enum State {
-    CachePrimaryKey = "CACHE_KEY",
     CacheMatchedKey = "CACHE_RESULT"
 }
 
