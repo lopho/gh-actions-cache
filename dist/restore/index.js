@@ -5048,6 +5048,7 @@ var Inputs;
     Inputs["UploadChunkSize"] = "upload-chunk-size";
     Inputs["ToHash"] = "to-hash";
     Inputs["SkipSave"] = "skip-save";
+    Inputs["SkipRestore"] = "skip-restore";
     Inputs["CheckOnly"] = "check-only";
 })(Inputs = exports.Inputs || (exports.Inputs = {}));
 var Outputs;
@@ -49627,9 +49628,10 @@ function run() {
                 return;
             }
             const checkOnly = core.getInput(constants_1.Inputs.CheckOnly) && core.getBooleanInput(constants_1.Inputs.CheckOnly);
+            const skipRestore = core.getInput(constants_1.Inputs.SkipRestore) && core.getBooleanInput(constants_1.Inputs.SkipRestore);
             const primaryKey = core.getInput(constants_1.Inputs.Key, { required: true });
             core.saveState(constants_1.State.CachePrimaryKey, primaryKey);
-            if (!checkOnly) {
+            if (!checkOnly && !skipRestore) {
                 const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
                 restoreKeys.push(`${primaryKey}-`);
                 const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, { required: true });

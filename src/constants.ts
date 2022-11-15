@@ -5,6 +5,7 @@ export enum Inputs {
     UploadChunkSize = "upload-chunk-size",
     ToHash = "to-hash",
     SkipSave = "skip-save",
+    SkipRestore = "skip-restore",
     CheckOnly = "check-only"
 }
 

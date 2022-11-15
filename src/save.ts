@@ -34,7 +34,7 @@ async function run(): Promise<void> {
             }
 
             const checkOnly = core.getInput(Inputs.CheckOnly) && core.getBooleanInput(Inputs.CheckOnly)
-            const cachedKey =  core.getState(State.CacheMatchedKey)
+            const cachedKey = core.getState(State.CacheMatchedKey)
             const toHash = core.getInput(Inputs.ToHash)
             let fastKey = `${primaryKey}-flk`
             if (toHash) {

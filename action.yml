@@ -20,6 +20,9 @@ inputs:
   skip-save:
     description: 'Do not save the cache'
     required: false
+  skip-restore:
+    description: 'Dp not restore the cache'
+    required: false
   check-only:
     description: 'only check for cache presence without retrieval'
     requierd: false

@@ -5048,6 +5048,7 @@ var Inputs;
     Inputs["UploadChunkSize"] = "upload-chunk-size";
     Inputs["ToHash"] = "to-hash";
     Inputs["SkipSave"] = "skip-save";
+    Inputs["SkipRestore"] = "skip-restore";
     Inputs["CheckOnly"] = "check-only";
 })(Inputs = exports.Inputs || (exports.Inputs = {}));
 var Outputs;

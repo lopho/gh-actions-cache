@@ -23,9 +23,10 @@ async function run(): Promise<void> {
         }
 
         const checkOnly = core.getInput(Inputs.CheckOnly) && core.getBooleanInput(Inputs.CheckOnly)
+        const skipRestore = core.getInput(Inputs.SkipRestore) && core.getBooleanInput(Inputs.SkipRestore)
         const primaryKey = core.getInput(Inputs.Key, { required: true })
         core.saveState(State.CachePrimaryKey, primaryKey)
-        if (!checkOnly) {
+        if (!checkOnly && !skipRestore) {
             const restoreKeys = utils.getInputAsArray(Inputs.RestoreKeys)
             restoreKeys.push(`${primaryKey}-`)
             const cachePaths = utils.getInputAsArray(Inputs.Path, { required: true })
