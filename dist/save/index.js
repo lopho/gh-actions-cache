@@ -47853,7 +47853,7 @@ function run() {
                     return;
                 }
                 const checkOnly = core.getInput(constants_1.Inputs.CheckOnly) && core.getBooleanInput(constants_1.Inputs.CheckOnly);
-                const state = utils.getCacheState();
+                const cachedKey = core.getState(constants_1.State.CacheMatchedKey);
                 const toHash = core.getInput(constants_1.Inputs.ToHash);
                 let fastKey = `${primaryKey}-flk`;
                 if (toHash) {
@@ -47863,7 +47863,9 @@ function run() {
                         fastKey = `${fastKey}-${hash}`;
                     }
                 }
-                else if (checkOnly || utils.isExactKeyMatch(fastKey, state)) {
+                core.info(`primary key: ${primaryKey}`);
+                core.info(`fast key: ${fastKey}`);
+                if (checkOnly || utils.isExactKeyMatch(fastKey, cachedKey)) {
                     core.info(`Cache hit occurred on the fast key ${fastKey}, not saving cache.`);
                     return;
                 }

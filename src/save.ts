@@ -34,7 +34,7 @@ async function run(): Promise<void> {
             }
 
             const checkOnly = core.getInput(Inputs.CheckOnly) && core.getBooleanInput(Inputs.CheckOnly)
-            const state = utils.getCacheState()
+            const cachedKey =  core.getState(State.CacheMatchedKey)
             const toHash = core.getInput(Inputs.ToHash)
             let fastKey = `${primaryKey}-flk`
             if (toHash) {
@@ -44,8 +44,9 @@ async function run(): Promise<void> {
                     fastKey = `${fastKey}-${hash}`
                 }
             }
-
-            else if (checkOnly || utils.isExactKeyMatch(fastKey, state)) {
+            core.info(`primary key: ${primaryKey}`)
+            core.info(`fast key: ${fastKey}`)
+            if (checkOnly || utils.isExactKeyMatch(fastKey, cachedKey)) {
                 core.info(
                     `Cache hit occurred on the fast key ${fastKey}, not saving cache.`
                 )
