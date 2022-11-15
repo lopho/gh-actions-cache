@@ -49645,6 +49645,7 @@ function run() {
                 utils.setCacheState(cacheKey);
                 core.info(`Cache restored from key: ${cacheKey}`);
                 const isExactKeyMatch = utils.isExactKeyMatch(primaryKey, cacheKey);
+                core.info(`Cache was hit: ${isExactKeyMatch}`);
                 utils.setCacheHitOutput(isExactKeyMatch);
             }
             else {
@@ -49668,6 +49669,7 @@ function run() {
                 utils.setCacheState(cacheKey);
                 core.info(`Cache restored from key: ${cacheKey}`);
                 const isExactKeyMatch = utils.isExactKeyMatch(fastLookupKey, cacheKey);
+                core.info(`Cache was hit, flk: ${isExactKeyMatch}`);
                 utils.setCacheHitOutput(isExactKeyMatch);
             }
         }
