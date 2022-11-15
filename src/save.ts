@@ -25,16 +25,15 @@ async function run(): Promise<void> {
             return
         }
 
-        let primaryKey = core.getState(State.CachePrimaryKey)
-
-        if (!primaryKey) {
-            utils.logWarning(`Error retrieving key from state.`)
-            return
-        }
-
-        const checkOnly = core.getInput(Inputs.CheckOnly) && core.getBooleanInput(Inputs.CheckOnly)
         const skipSave = core.getInput(Inputs.SkipSave) && core.getBooleanInput(Inputs.SkipSave)
         if (!skipSave) {
+            let primaryKey = core.getState(State.CachePrimaryKey)
+            if (!primaryKey) {
+                utils.logWarning(`Error retrieving key from state.`)
+                return
+            }
+
+            const checkOnly = core.getInput(Inputs.CheckOnly) && core.getBooleanInput(Inputs.CheckOnly)
             const state = utils.getCacheState()
             const toHash = core.getInput(Inputs.ToHash)
             let fastKey = `${primaryKey}-flk`
@@ -46,13 +45,7 @@ async function run(): Promise<void> {
                 }
             }
 
-            if (utils.isExactKeyMatch(primaryKey, state)) {
-                core.info(
-                    `Cache hit occurred on the primary key ${primaryKey}, not saving cache.`
-                )
-                return
-            }
-            else if (checkOnly && utils.isExactKeyMatch(fastKey, state)) {
+            else if (checkOnly || utils.isExactKeyMatch(fastKey, state)) {
                 core.info(
                     `Cache hit occurred on the fast key ${fastKey}, not saving cache.`
                 )

@@ -43,6 +43,7 @@ async function run(): Promise<void> {
                 )
                 return
             }
+            core.info(`Cache restored from key: ${cacheKey}`)
         }
 
         const fastRestoreKeys = utils.getInputAsArray(Inputs.RestoreKeys)
