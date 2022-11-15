@@ -49641,37 +49641,29 @@ function run() {
                     ].join(", ")}`);
                     return;
                 }
-                // Store the matched cache key
-                utils.setCacheState(cacheKey);
-                core.info(`Cache restored from key: ${cacheKey}`);
-                const isExactKeyMatch = utils.isExactKeyMatch(primaryKey, cacheKey);
-                core.info(`Cache was hit: ${isExactKeyMatch}`);
-                utils.setCacheHitOutput(isExactKeyMatch);
             }
-            else {
-                const fastRestoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
-                let fastLookupKey = `${primaryKey}-flk`;
-                fastRestoreKeys.push(`${fastLookupKey}-`);
-                const toHash = core.getInput(constants_1.Inputs.ToHash);
-                if (toHash) {
-                    const hash = yield (0, glob_1.hashFiles)(toHash);
-                    fastLookupKey = `${fastLookupKey}-${hash}`;
-                }
-                const cacheKey = yield cache.restoreCache([`${fastLookupKey}`], fastLookupKey, fastRestoreKeys);
-                if (!cacheKey) {
-                    core.info(`Cache not found for input keys: ${[
-                        fastLookupKey,
-                        ...fastRestoreKeys
-                    ].join(", ")}`);
-                    return;
-                }
-                // Store the matched cache key
-                utils.setCacheState(cacheKey);
-                core.info(`Cache restored from key: ${cacheKey}`);
-                const isExactKeyMatch = utils.isExactKeyMatch(fastLookupKey, cacheKey);
-                core.info(`Cache was hit, flk: ${isExactKeyMatch}`);
-                utils.setCacheHitOutput(isExactKeyMatch);
+            const fastRestoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
+            let fastLookupKey = `${primaryKey}-flk`;
+            fastRestoreKeys.push(`${fastLookupKey}-`);
+            const toHash = core.getInput(constants_1.Inputs.ToHash);
+            if (toHash) {
+                const hash = yield (0, glob_1.hashFiles)(toHash);
+                fastLookupKey = `${fastLookupKey}-${hash}`;
             }
+            const fastCacheKey = yield cache.restoreCache([`${fastLookupKey}`], fastLookupKey, fastRestoreKeys);
+            if (!fastCacheKey) {
+                core.info(`Cache not found for input keys: ${[
+                    fastLookupKey,
+                    ...fastRestoreKeys
+                ].join(", ")}`);
+                return;
+            }
+            // Store the matched cache key
+            utils.setCacheState(fastCacheKey);
+            core.info(`Cache restored from key: ${fastCacheKey}`);
+            const isExactKeyMatchFast = utils.isExactKeyMatch(fastLookupKey, fastCacheKey);
+            core.info(`Cache was hit: ${isExactKeyMatchFast}`);
+            utils.setCacheHitOutput(isExactKeyMatchFast);
         }
         catch (error) {
             core.setFailed(error.message);
