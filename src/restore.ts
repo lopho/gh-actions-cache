@@ -43,43 +43,37 @@ async function run(): Promise<void> {
                 )
                 return
             }
-            // Store the matched cache key
-            utils.setCacheState(cacheKey)
-            core.info(`Cache restored from key: ${cacheKey}`)
-            const isExactKeyMatch = utils.isExactKeyMatch(primaryKey, cacheKey)
-            core.info(`Cache was hit: ${isExactKeyMatch}`)
-            utils.setCacheHitOutput(isExactKeyMatch)
         }
-        else {
-            const fastRestoreKeys = utils.getInputAsArray(Inputs.RestoreKeys)
-            let fastLookupKey = `${primaryKey}-flk`
-            fastRestoreKeys.push(`${fastLookupKey}-`)
-            const toHash = core.getInput(Inputs.ToHash)
-            if (toHash) {
-                const hash = await hashFiles(toHash)
-                fastLookupKey = `${fastLookupKey}-${hash}`
-            }
-            const cacheKey = await cache.restoreCache(
-                [`${fastLookupKey}`],
-                fastLookupKey,
-                fastRestoreKeys
+
+        const fastRestoreKeys = utils.getInputAsArray(Inputs.RestoreKeys)
+        let fastLookupKey = `${primaryKey}-flk`
+        fastRestoreKeys.push(`${fastLookupKey}-`)
+        const toHash = core.getInput(Inputs.ToHash)
+        if (toHash) {
+            const hash = await hashFiles(toHash)
+            fastLookupKey = `${fastLookupKey}-${hash}`
+        }
+        const fastCacheKey = await cache.restoreCache(
+            [`${fastLookupKey}`],
+            fastLookupKey,
+            fastRestoreKeys
+        )
+        if (!fastCacheKey) {
+            core.info(
+                `Cache not found for input keys: ${[
+                    fastLookupKey,
+                    ...fastRestoreKeys
+                ].join(", ")}`
             )
-            if (!cacheKey) {
-                core.info(
-                    `Cache not found for input keys: ${[
-                        fastLookupKey,
-                        ...fastRestoreKeys
-                    ].join(", ")}`
-                )
-                return
-            }
-            // Store the matched cache key
-            utils.setCacheState(cacheKey)
-            core.info(`Cache restored from key: ${cacheKey}`)
-            const isExactKeyMatch = utils.isExactKeyMatch(fastLookupKey, cacheKey)
-            core.info(`Cache was hit, flk: ${isExactKeyMatch}`)
-            utils.setCacheHitOutput(isExactKeyMatch)
+            return
         }
+        // Store the matched cache key
+        utils.setCacheState(fastCacheKey)
+        core.info(`Cache restored from key: ${fastCacheKey}`)
+        const isExactKeyMatchFast = utils.isExactKeyMatch(fastLookupKey, fastCacheKey)
+        core.info(`Cache was hit: ${isExactKeyMatchFast}`)
+        utils.setCacheHitOutput(isExactKeyMatchFast)
+
     } catch (error: unknown) {
         core.setFailed((error as Error).message)
     }
